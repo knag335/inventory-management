@@ -74,6 +74,44 @@
           </table>
         </div>
       </div>
+
+      <!-- Restocking orders are placed from the Restocking tab and are independent of the
+           global filters, so this section is loaded once and not tied to the filter watcher. -->
+      <div class="card submitted-orders">
+        <div class="card-header">
+          <h3 class="card-title">{{ t('restocking.submitted.title') }} ({{ restockingOrders.length }})</h3>
+        </div>
+        <div v-if="restockingError" class="error">{{ restockingError }}</div>
+        <div v-else-if="!restockingOrders.length" class="empty-state">
+          {{ t('restocking.submitted.empty') }}
+        </div>
+        <div v-else class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>{{ t('restocking.submitted.orderNumber') }}</th>
+                <th>{{ t('restocking.submitted.submittedDate') }}</th>
+                <th>{{ t('restocking.submitted.items') }}</th>
+                <th>{{ t('restocking.submitted.totalCost') }}</th>
+                <th>{{ t('restocking.submitted.status') }}</th>
+                <th>{{ t('restocking.submitted.leadTime') }}</th>
+                <th>{{ t('restocking.submitted.expectedDelivery') }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="order in restockingOrders" :key="order.id">
+                <td><strong>{{ order.order_number }}</strong></td>
+                <td>{{ formatDate(order.created_date) }}</td>
+                <td>{{ t('orders.itemsCount', { count: order.items.length }) }}</td>
+                <td><strong>{{ formatRestockCost(order.total_cost) }}</strong></td>
+                <td><span class="badge info">{{ t('restocking.submitted.statusSubmitted') }}</span></td>
+                <td>{{ order.lead_time_days }}</td>
+                <td>{{ formatDate(order.expected_delivery) }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -83,6 +121,7 @@ import { ref, onMounted, watch, computed } from 'vue'
 import { api } from '../api'
 import { useFilters } from '../composables/useFilters'
 import { useI18n } from '../composables/useI18n'
+import { formatCurrencyWithDecimals } from '../utils/currency'
 
 export default {
   name: 'Orders',
@@ -95,6 +134,8 @@ export default {
     const loading = ref(true)
     const error = ref(null)
     const orders = ref([])
+    const restockingOrders = ref([])
+    const restockingError = ref(null)
 
     // Use shared filters
     const {
@@ -146,20 +187,40 @@ export default {
     const formatDate = (dateString) => {
       const { currentLocale } = useI18n()
       const locale = currentLocale.value === 'ja' ? 'ja-JP' : 'en-US'
-      return new Date(dateString).toLocaleDateString(locale, {
+      const date = new Date(dateString)
+      if (isNaN(date.getTime())) return '-'
+      return date.toLocaleDateString(locale, {
         year: 'numeric',
         month: 'short',
         day: 'numeric'
       })
     }
 
-    onMounted(loadOrders)
+    const loadRestockingOrders = async () => {
+      try {
+        restockingOrders.value = await api.getRestockingOrders()
+      } catch (err) {
+        restockingError.value = t('restocking.submitted.loadError')
+        console.error('Failed to load restocking orders:', err)
+      }
+    }
+
+    const formatRestockCost = (amount) =>
+      formatCurrencyWithDecimals(amount, currentCurrency.value, 2)
+
+    onMounted(() => {
+      loadOrders()
+      loadRestockingOrders()
+    })
 
     return {
       t,
       loading,
       error,
       orders,
+      restockingOrders,
+      restockingError,
+      formatRestockCost,
       getOrdersByStatus,
       getOrderStatusClass,
       formatDate,
@@ -274,6 +335,16 @@ export default {
 
 .item-meta {
   font-size: 0.813rem;
+  color: #64748b;
+}
+
+.submitted-orders {
+  margin-top: 1.5rem;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 2rem;
   color: #64748b;
 }
 </style>
