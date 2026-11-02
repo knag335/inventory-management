@@ -6,6 +6,7 @@ export default {
     orders: '注文',
     finance: '財務',
     demandForecast: '需要予測',
+    restocking: '補充',
     companyName: '触媒コンポーネンツ',
     subtitle: '在庫管理システム'
   },
@@ -309,6 +310,50 @@ export default {
     english: 'English',
     japanese: '日本語',
     selectLanguage: '言語を選択'
+  },
+
+  // 補充
+  restocking: {
+    title: '補充',
+    description: '予算に応じた推奨購入品目(需要トレンドと需要ギャップ順)',
+    budget: '予算',
+    totalCost: '合計コスト',
+    remainingBudget: '残り予算',
+    longestLeadTime: '最長リードタイム',
+    days: '{count}日',
+    recommendations: '推奨品目',
+    placeOrder: '注文する',
+    placing: '注文中...',
+    partial: '一部',
+    empty: 'この予算で購入できる品目はありません。予算を増やしてください。',
+    orderPlaced: '注文 {orderNumber} を送信しました。',
+    expectedDelivery: '予定配達日',
+    viewOrders: '注文一覧を見る',
+    loadError: '補充の推奨を読み込めませんでした',
+    orderError: '補充注文を送信できませんでした',
+    table: {
+      sku: 'SKU',
+      item: '品目',
+      trend: 'トレンド',
+      demandGap: '需要ギャップ',
+      quantity: '推奨数量',
+      unitCost: '単価',
+      lineTotal: '小計',
+      leadTime: 'リードタイム(日)'
+    },
+    submitted: {
+      title: '送信済み注文',
+      empty: '送信済みの補充注文はまだありません。',
+      orderNumber: '注文番号',
+      submittedDate: '送信日',
+      items: '品目',
+      totalCost: '合計コスト',
+      status: 'ステータス',
+      leadTime: 'リードタイム(日)',
+      expectedDelivery: '予定配達日',
+      statusSubmitted: '送信済み',
+      loadError: '送信済み注文を読み込めませんでした'
+    }
   },
 
   // Common

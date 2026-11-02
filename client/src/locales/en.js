@@ -6,6 +6,7 @@ export default {
     orders: 'Orders',
     finance: 'Finance',
     demandForecast: 'Demand Forecast',
+    restocking: 'Restocking',
     companyName: 'Catalyst Components',
     subtitle: 'Inventory Management System'
   },
@@ -309,6 +310,50 @@ export default {
     english: 'English',
     japanese: 'Japanese',
     selectLanguage: 'Select Language'
+  },
+
+  // Restocking
+  restocking: {
+    title: 'Restocking',
+    description: 'Recommended purchases for a given budget, prioritised by demand trend and gap',
+    budget: 'Budget',
+    totalCost: 'Total Cost',
+    remainingBudget: 'Remaining Budget',
+    longestLeadTime: 'Longest Lead Time',
+    days: '{count} days',
+    recommendations: 'Recommendations',
+    placeOrder: 'Place Order',
+    placing: 'Placing...',
+    partial: 'Partial',
+    empty: 'No items fit within this budget. Increase the budget to see recommendations.',
+    orderPlaced: 'Order {orderNumber} submitted.',
+    expectedDelivery: 'Expected delivery',
+    viewOrders: 'View in Orders',
+    loadError: 'Failed to load restocking recommendations',
+    orderError: 'Failed to place restocking order',
+    table: {
+      sku: 'SKU',
+      item: 'Item',
+      trend: 'Trend',
+      demandGap: 'Demand Gap',
+      quantity: 'Recommended Qty',
+      unitCost: 'Unit Cost',
+      lineTotal: 'Line Total',
+      leadTime: 'Lead Time (days)'
+    },
+    submitted: {
+      title: 'Submitted Orders',
+      empty: 'No restocking orders have been submitted yet.',
+      orderNumber: 'Order Number',
+      submittedDate: 'Submitted',
+      items: 'Items',
+      totalCost: 'Total Cost',
+      status: 'Status',
+      leadTime: 'Lead Time (days)',
+      expectedDelivery: 'Expected Delivery',
+      statusSubmitted: 'Submitted',
+      loadError: 'Failed to load submitted orders'
+    }
   },
 
   // Common
